@@ -1,5 +1,28 @@
 # PartyBuilder - Claude Project Context
 
+## Project Status
+
+✅ **Complete** - All code written and committed to local git
+⏳ **Pending** - Seed database to populate test parties
+⏳ **Pending** - Push to GitHub repository
+
+## Quick Start
+
+```bash
+# 1. Install dependencies (already done)
+npm install
+
+# 2. Start development server
+npm run dev
+
+# 3. In another terminal, seed the database with test parties
+npm run seed
+
+# 4. Open http://localhost:3000
+```
+
+**IMPORTANT**: The app will show "No parties yet" until you run `npm run seed`!
+
 ## Project Overview
 
 PartyBuilder is a no-database MVP platform for creating political party prototypes in Western Australia. It helps aspiring parties gather 500+ members and prepare for WAEC (Western Australian Electoral Commission) registration.
@@ -315,6 +338,32 @@ When working on PartyBuilder:
 - [ ] Check JSON persistence (local dev)
 - [ ] Verify graceful degradation (serverless)
 
+## Next Steps
+
+### To See Parties in the App
+
+1. **Start the dev server**:
+   ```bash
+   npm run dev
+   ```
+
+2. **Seed the database** (in another terminal):
+   ```bash
+   npm run seed
+   ```
+
+3. **You'll see**:
+   - 3 test parties: Stop Ai Party, Fix Housing Party, Pro Ai Party
+   - 12 real registered WA parties (all with 500+ members showing green progress bars)
+
+### To Push to GitHub
+
+```bash
+# Create repo on GitHub first, then:
+git remote add origin https://github.com/YOUR_USERNAME/partybuilder.git
+git push -u origin master
+```
+
 ## Links
 
 - **WAEC Official**: https://www.elections.wa.gov.au/
@@ -324,5 +373,6 @@ When working on PartyBuilder:
 
 ---
 
-**Last Updated**: November 2025
+**Last Updated**: November 4, 2025
 **Version**: 0.1.0 (MVP)
+**Status**: Code complete, ready to run and seed
