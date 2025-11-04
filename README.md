@@ -1,12 +1,12 @@
 # PartyBuilder
 
-**Build your political party prototype for Western Australia**
+**Build your political party for Western Australia**
 
-PartyBuilder is a no-database MVP platform that helps aspiring political parties in Western Australia prototype their organization, gather members, and prepare for WAEC (Western Australian Electoral Commission) registration.
+PartyBuilder is a no-database MVP platform that helps aspiring political parties in Western Australia organize, gather members, and prepare for WAEC (Western Australian Electoral Commission) registration.
 
 ## Features
 
-- **Party Management**: Create and manage political party prototypes
+- **Party Management**: Create and manage political parties
 - **Member Recruitment**: Gather supporters and track progress to 500 members
 - **WAEC Compliance**: Built-in validation rules for party names and registration requirements
 - **Progress Tracking**: Visual dashboards showing member growth and readiness
@@ -252,7 +252,7 @@ For official information about political party registration in Western Australia
 - [Western Australian Electoral Commission](https://www.elections.wa.gov.au/)
 - [Political Party Registration Guide](https://www.elections.wa.gov.au/vote/political-parties)
 
-**Disclaimer**: PartyBuilder is a prototype tool and not affiliated with WAEC. Always refer to official WAEC guidelines for registration requirements.
+**Disclaimer**: PartyBuilder is an independent tool and not affiliated with WAEC. Always refer to official WAEC guidelines for registration requirements.
 
 ## License
 

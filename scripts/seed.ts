@@ -14,7 +14,7 @@ interface PartyData {
   members?: number;
 }
 
-// Test parties (prototypes)
+// Test parties
 const testParties: PartyData[] = [
   {
     name: 'Stop Ai Party',
@@ -204,7 +204,7 @@ async function addMembers(slug: string, count: number) {
 async function seed() {
   console.log('🌱 Seeding database...\n');
 
-  console.log('Creating test parties (prototypes)...');
+  console.log('Creating test parties...');
   for (const party of testParties) {
     const created = await createParty(party);
     if (created && party.members) {

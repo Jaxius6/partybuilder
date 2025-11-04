@@ -17,8 +17,21 @@ export default function Home() {
   const [categoryStats, setCategoryStats] = useState<{ category: string; count: number }[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedState, setSelectedState] = useState('WA');
 
   const electionDate = process.env.NEXT_PUBLIC_ELECTION_DATE || '2029-03-08';
+
+  // WA Legislative Council seat distribution (36 seats total)
+  const legislativeCouncilSeats = [
+    { label: 'WA Labor', value: 14 },
+    { label: 'Liberal Party Western Australia', value: 9 },
+    { label: 'The Greens (WA) Inc', value: 4 },
+    { label: 'The Nationals WA', value: 3 },
+    { label: 'Legalise Cannabis Party WA', value: 2 },
+    { label: "Pauline Hanson's One Nation", value: 2 },
+    { label: 'Daylight Saving Party', value: 1 },
+    { label: 'Independent/Others', value: 1 },
+  ];
 
   useEffect(() => {
     fetchParties();
@@ -60,11 +73,27 @@ export default function Home() {
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                PartyBuilder
+                PartyBuilder.com.au
               </h1>
-              <p className="mt-1 text-sm text-gray-600">
-                Build your political party prototype for Western Australia
-              </p>
+              <div className="mt-2 flex flex-col sm:flex-row sm:items-center gap-2">
+                <p className="text-sm text-gray-600">
+                  Start your own political party in
+                </p>
+                <select
+                  value={selectedState}
+                  onChange={(e) => setSelectedState(e.target.value)}
+                  className="text-sm px-3 py-1 border border-gray-300 rounded-lg bg-white text-gray-900 font-medium hover:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="WA">Western Australia</option>
+                  <option value="NSW" disabled>New South Wales (Coming Soon)</option>
+                  <option value="VIC" disabled>Victoria (Coming Soon)</option>
+                  <option value="QLD" disabled>Queensland (Coming Soon)</option>
+                  <option value="SA" disabled>South Australia (Coming Soon)</option>
+                  <option value="TAS" disabled>Tasmania (Coming Soon)</option>
+                  <option value="ACT" disabled>ACT (Coming Soon)</option>
+                  <option value="NT" disabled>Northern Territory (Coming Soon)</option>
+                </select>
+              </div>
             </div>
             <Countdown targetDate={electionDate} />
           </div>
@@ -75,21 +104,15 @@ export default function Home() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Stats and Actions */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          {/* Category Pie Chart */}
+          {/* Legislative Council Seats Chart */}
           <div className="bg-white rounded-lg shadow p-6">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
-              Parties by Category
+              WA Legislative Council Seats
             </h2>
-            {categoryStats.length > 0 ? (
-              <MiniPie
-                data={categoryStats.map(s => ({
-                  label: s.category,
-                  value: s.count,
-                }))}
-              />
-            ) : (
-              <p className="text-center text-gray-500 py-8">No data yet</p>
-            )}
+            <MiniPie data={legislativeCouncilSeats} />
+            <p className="text-xs text-gray-500 mt-4 text-center">
+              Current distribution of 36 seats
+            </p>
           </div>
 
           {/* Create Party CTA */}
@@ -98,7 +121,7 @@ export default function Home() {
               Start Your Political Journey
             </h2>
             <p className="mb-6 text-blue-100">
-              Create a prototype political party, gather 500 members, and prepare for WAEC registration.
+              Create a political party, gather 500 members, and prepare for WAEC registration.
             </p>
             <button
               onClick={() => setIsModalOpen(true)}

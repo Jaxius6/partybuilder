@@ -79,7 +79,11 @@ export default function Countdown({ targetDate, className = '' }: CountdownProps
   }, [targetDate]);
 
   return (
-    <div className={`inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg ${className}`}>
+    <div className={`inline-flex flex-col items-center gap-2 px-3 sm:px-4 py-3 bg-blue-50 border border-blue-200 rounded-lg ${className}`}>
+      <span className="text-xs font-semibold text-blue-800 uppercase tracking-wide">
+        Until Next WA State Election
+      </span>
+      <div className="flex items-center gap-1 sm:gap-2">
       {timeRemaining.years > 0 && (
         <div className="flex flex-col items-center">
           <span className="text-lg sm:text-2xl font-bold text-blue-600">{timeRemaining.years}</span>
@@ -114,6 +118,7 @@ export default function Countdown({ targetDate, className = '' }: CountdownProps
       <div className="flex flex-col items-center">
         <span className="text-lg sm:text-2xl font-bold text-blue-600">{String(timeRemaining.seconds).padStart(2, '0')}</span>
         <span className="text-[10px] sm:text-xs text-blue-800">secs</span>
+      </div>
       </div>
     </div>
   );

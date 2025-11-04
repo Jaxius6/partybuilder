@@ -405,26 +405,88 @@ export default function PartyPage() {
 
             {/* Checklist */}
             <div className="bg-white rounded-lg shadow-lg p-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Registration Checklist</h3>
-              <div className="space-y-3">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">Registration Checklist</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {[
-                  { label: 'Bank Account', checked: party.has_bank_account },
-                  { label: 'Executive Committee', checked: party.has_exec },
-                  { label: 'Constitution', checked: party.has_constitution },
-                  { label: 'Website', checked: party.has_website },
-                  { label: 'Facebook Page', checked: party.has_facebook },
+                  {
+                    label: 'Bank Account',
+                    checked: party.has_bank_account,
+                    icon: '🏦',
+                    tutorial: '#',
+                    description: 'Party bank account required'
+                  },
+                  {
+                    label: 'Executive Committee',
+                    checked: party.has_exec,
+                    icon: '👥',
+                    tutorial: '#',
+                    description: 'Form executive team'
+                  },
+                  {
+                    label: 'Constitution',
+                    checked: party.has_constitution,
+                    icon: '📜',
+                    tutorial: '#',
+                    description: 'Draft party constitution'
+                  },
+                  {
+                    label: 'Website',
+                    checked: party.has_website,
+                    icon: '🌐',
+                    tutorial: '#',
+                    description: 'Create online presence'
+                  },
+                  {
+                    label: 'Facebook Page',
+                    checked: party.has_facebook,
+                    icon: '📱',
+                    tutorial: '#',
+                    description: 'Build social following'
+                  },
+                  {
+                    label: '500 Members',
+                    checked: party.members_count >= 500,
+                    icon: '✓',
+                    tutorial: '#',
+                    description: 'Gather eligible voters'
+                  },
                 ].map((item) => (
-                  <div key={item.label} className="flex items-center gap-3">
-                    <div className={`w-5 h-5 rounded flex items-center justify-center ${item.checked ? 'bg-green-500' : 'bg-gray-200'}`}>
+                  <div
+                    key={item.label}
+                    className={`relative p-6 rounded-xl border-2 transition-all duration-300 ${
+                      item.checked
+                        ? 'bg-gradient-to-br from-green-50 to-green-100 border-green-400 shadow-md'
+                        : 'bg-gray-50 border-gray-200 hover:border-blue-300'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <span className="text-3xl">{item.icon}</span>
+                        <div>
+                          <h4 className={`font-bold text-lg ${item.checked ? 'text-green-900' : 'text-gray-900'}`}>
+                            {item.label}
+                          </h4>
+                          <p className={`text-xs ${item.checked ? 'text-green-700' : 'text-gray-600'}`}>
+                            {item.description}
+                          </p>
+                        </div>
+                      </div>
                       {item.checked && (
-                        <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
+                        <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
+                          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                        </div>
                       )}
                     </div>
-                    <span className={`text-sm ${item.checked ? 'text-gray-900 font-medium' : 'text-gray-600'}`}>
-                      {item.label}
-                    </span>
+                    {!item.checked && (
+                      <button
+                        onClick={() => window.open(item.tutorial, '_blank')}
+                        className="w-full mt-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors"
+                      >
+                        View Tutorial →
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
