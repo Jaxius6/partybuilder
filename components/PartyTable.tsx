@@ -32,6 +32,24 @@ export default function PartyTable({ parties: initialParties }: PartyTableProps)
       console.error('Error liking party:', error);
     }
   };
+
+  // Generate unique color for each party based on name
+  const getPartyColor = (name: string) => {
+    const colors = [
+      'from-red-400 to-red-600',
+      'from-blue-400 to-blue-600',
+      'from-green-400 to-green-600',
+      'from-yellow-400 to-yellow-600',
+      'from-purple-400 to-purple-600',
+      'from-pink-400 to-pink-600',
+      'from-indigo-400 to-indigo-600',
+      'from-orange-400 to-orange-600',
+      'from-teal-400 to-teal-600',
+      'from-cyan-400 to-cyan-600',
+    ];
+    const hash = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return colors[hash % colors.length];
+  };
   return (
     <div className="overflow-x-auto rounded-lg border border-gray-200">
       <table className="min-w-full divide-y divide-gray-200">
@@ -71,8 +89,8 @@ export default function PartyTable({ parties: initialParties }: PartyTableProps)
                   {index + 1}
                 </td>
                 <td className="px-4 py-4 whitespace-nowrap">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold text-lg">
-                    {party.name.charAt(0)}
+                  <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${getPartyColor(party.name)} flex items-center justify-center text-white font-bold text-sm shadow-md border-2 border-white`}>
+                    {party.abbreviation || party.name.substring(0, 3).toUpperCase()}
                   </div>
                 </td>
                 <td className="px-4 py-4">

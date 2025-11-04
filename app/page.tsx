@@ -71,28 +71,36 @@ export default function Home() {
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                PartyBuilder.com.au
-              </h1>
-              <div className="mt-2 flex flex-col sm:flex-row sm:items-center gap-2">
-                <p className="text-sm text-gray-600">
-                  Start your own political party in
-                </p>
-                <select
-                  value={selectedState}
-                  onChange={(e) => setSelectedState(e.target.value)}
-                  className="text-sm px-3 py-1 border border-gray-300 rounded-lg bg-white text-gray-900 font-medium hover:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="WA">Western Australia</option>
-                  <option value="NSW" disabled>New South Wales (Coming Soon)</option>
-                  <option value="VIC" disabled>Victoria (Coming Soon)</option>
-                  <option value="QLD" disabled>Queensland (Coming Soon)</option>
-                  <option value="SA" disabled>South Australia (Coming Soon)</option>
-                  <option value="TAS" disabled>Tasmania (Coming Soon)</option>
-                  <option value="ACT" disabled>ACT (Coming Soon)</option>
-                  <option value="NT" disabled>Northern Territory (Coming Soon)</option>
-                </select>
+            <div className="flex items-center gap-4">
+              {/* Logo */}
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center shadow-lg flex-shrink-0">
+                <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                </svg>
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">
+                  PartyBuilder.com.au
+                </h1>
+                <div className="mt-2 flex flex-col sm:flex-row sm:items-center gap-2">
+                  <p className="text-sm text-gray-600">
+                    Start your own political party in
+                  </p>
+                  <select
+                    value={selectedState}
+                    onChange={(e) => setSelectedState(e.target.value)}
+                    className="text-sm px-3 py-1 border border-gray-300 rounded-lg bg-white text-gray-900 font-medium hover:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="WA">Western Australia</option>
+                    <option value="NSW" disabled>New South Wales (Coming Soon)</option>
+                    <option value="VIC" disabled>Victoria (Coming Soon)</option>
+                    <option value="QLD" disabled>Queensland (Coming Soon)</option>
+                    <option value="SA" disabled>South Australia (Coming Soon)</option>
+                    <option value="TAS" disabled>Tasmania (Coming Soon)</option>
+                    <option value="ACT" disabled>ACT (Coming Soon)</option>
+                    <option value="NT" disabled>Northern Territory (Coming Soon)</option>
+                  </select>
+                </div>
               </div>
             </div>
             <Countdown targetDate={electionDate} />
@@ -102,33 +110,70 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats and Actions */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        {/* Hero CTA */}
+        <div className="mb-8 bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 rounded-2xl shadow-xl p-10 text-white text-center">
+          <h2 className="text-4xl font-bold mb-3">
+            Start Your Political Journey
+          </h2>
+          <p className="text-xl mb-8 text-blue-100 max-w-2xl mx-auto">
+            Create a political party, gather 500 members, and prepare for WAEC registration
+          </p>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="px-8 py-4 bg-white text-blue-600 rounded-xl font-bold text-lg hover:bg-blue-50 transition-all hover:scale-105 shadow-lg"
+          >
+            + Create New Party
+          </button>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* Legislative Council Seats Chart */}
-          <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
               WA Legislative Council Seats
             </h2>
             <MiniPie data={legislativeCouncilSeats} />
-            <p className="text-xs text-gray-500 mt-4 text-center">
-              Current distribution of 36 seats
+            <p className="text-sm text-gray-600 mt-6 text-center">
+              Current distribution of 36 seats in the Upper House
             </p>
           </div>
 
-          {/* Create Party CTA */}
-          <div className="lg:col-span-2 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow p-8 text-white">
-            <h2 className="text-2xl font-bold mb-2">
-              Start Your Political Journey
+          {/* Stats Summary */}
+          <div className="bg-white rounded-xl shadow-lg p-8">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+              Platform Statistics
             </h2>
-            <p className="mb-6 text-blue-100">
-              Create a political party, gather 500 members, and prepare for WAEC registration.
-            </p>
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
-            >
-              + Create New Party
-            </button>
+            <div className="space-y-6">
+              <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
+                <div>
+                  <div className="text-sm text-gray-600">Total Parties</div>
+                  <div className="text-4xl font-bold text-blue-600">{totalParties}</div>
+                </div>
+                <div className="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center">
+                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+                  </svg>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg">
+                <div>
+                  <div className="text-sm text-gray-600">Total Members</div>
+                  <div className="text-4xl font-bold text-green-600">{totalMembers.toLocaleString()}</div>
+                </div>
+                <div className="w-16 h-16 rounded-full bg-green-600 flex items-center justify-center">
+                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                  </svg>
+                </div>
+              </div>
+              <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border-2 border-purple-200">
+                <div className="text-sm text-purple-700 font-medium mb-1">Registration Threshold</div>
+                <div className="text-lg text-purple-900">
+                  <span className="font-bold text-2xl">{parties.filter(p => p.members_count >= 500).length}</span> parties ready for WAEC
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

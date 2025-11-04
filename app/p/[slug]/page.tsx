@@ -10,7 +10,6 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import ProgressBar from '@/components/ProgressBar';
 import MiniLine from '@/components/MiniLine';
-import Countdown from '@/components/Countdown';
 import { timeAgo } from '@/lib/util';
 import type { PartyWithStats, Member, DailyStats } from '@/lib/types';
 
@@ -33,8 +32,6 @@ export default function PartyPage() {
     dob: '',
     is_wa_elector: false,
   });
-
-  const electionDate = process.env.NEXT_PUBLIC_ELECTION_DATE || '2029-03-08';
 
   useEffect(() => {
     fetchParty();
@@ -405,91 +402,77 @@ export default function PartyPage() {
 
             {/* Checklist */}
             <div className="bg-white rounded-lg shadow-lg p-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">Registration Checklist</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">WAEC Registration Checklist</h3>
+              <div className="flex flex-wrap gap-3 justify-center">
                 {[
                   {
-                    label: 'Bank Account',
-                    checked: party.has_bank_account,
-                    icon: '🏦',
+                    label: 'Party Name',
+                    checked: !!party.name,
                     tutorial: '#',
-                    description: 'Party bank account required'
                   },
                   {
-                    label: 'Executive Committee',
-                    checked: party.has_exec,
-                    icon: '👥',
+                    label: 'Abbreviation',
+                    checked: !!party.abbreviation,
                     tutorial: '#',
-                    description: 'Form executive team'
+                  },
+                  {
+                    label: 'Secretary',
+                    checked: !!party.secretary_name && !!party.secretary_address,
+                    tutorial: '#',
+                  },
+                  {
+                    label: '500+ Members',
+                    checked: party.members_count >= 500,
+                    tutorial: '#',
+                  },
+                  {
+                    label: 'Declarations',
+                    checked: false, // Not tracked in MVP
+                    tutorial: '#',
                   },
                   {
                     label: 'Constitution',
                     checked: party.has_constitution,
-                    icon: '📜',
                     tutorial: '#',
-                    description: 'Draft party constitution'
                   },
                   {
-                    label: 'Website',
-                    checked: party.has_website,
-                    icon: '🌐',
+                    label: 'Prescribed Info',
+                    checked: false, // Not tracked in MVP
                     tutorial: '#',
-                    description: 'Create online presence'
                   },
                   {
-                    label: 'Facebook Page',
-                    checked: party.has_facebook,
-                    icon: '📱',
+                    label: '$2,000 Fee',
+                    checked: party.app_fee_paid,
                     tutorial: '#',
-                    description: 'Build social following'
-                  },
-                  {
-                    label: '500 Members',
-                    checked: party.members_count >= 500,
-                    icon: '✓',
-                    tutorial: '#',
-                    description: 'Gather eligible voters'
                   },
                 ].map((item) => (
                   <div
                     key={item.label}
-                    className={`relative p-6 rounded-xl border-2 transition-all duration-300 ${
+                    className={`group relative flex flex-col items-center p-6 rounded-2xl border-4 transition-all duration-300 cursor-pointer ${
                       item.checked
-                        ? 'bg-gradient-to-br from-green-50 to-green-100 border-green-400 shadow-md'
-                        : 'bg-gray-50 border-gray-200 hover:border-blue-300'
+                        ? 'bg-green-500 border-green-600 shadow-lg'
+                        : 'bg-gray-100 border-gray-300 hover:border-blue-400'
                     }`}
+                    onClick={() => !item.checked && window.open(item.tutorial, '_blank')}
                   >
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-3">
-                        <span className="text-3xl">{item.icon}</span>
-                        <div>
-                          <h4 className={`font-bold text-lg ${item.checked ? 'text-green-900' : 'text-gray-900'}`}>
-                            {item.label}
-                          </h4>
-                          <p className={`text-xs ${item.checked ? 'text-green-700' : 'text-gray-600'}`}>
-                            {item.description}
-                          </p>
-                        </div>
+                    {item.checked ? (
+                      <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-3">
+                        <svg className="w-10 h-10 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
                       </div>
-                      {item.checked && (
-                        <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
-                          <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                          </svg>
-                        </div>
-                      )}
-                    </div>
-                    {!item.checked && (
-                      <button
-                        onClick={() => window.open(item.tutorial, '_blank')}
-                        className="w-full mt-2 px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors"
-                      >
-                        View Tutorial →
-                      </button>
+                    ) : (
+                      <div className="w-16 h-16 rounded-full bg-gray-200 border-4 border-gray-300 mb-3 group-hover:border-blue-400 transition-colors" />
                     )}
+                    <span className={`text-sm font-bold text-center ${item.checked ? 'text-white' : 'text-gray-700'}`}>
+                      {item.label}
+                    </span>
                   </div>
                 ))}
               </div>
+              <p className="text-xs text-gray-500 text-center mt-6">
+                Click on incomplete items for tutorials on how to complete them
+              </p>
             </div>
 
             {/* Export CSV */}
@@ -509,12 +492,6 @@ export default function PartyPage() {
 
           {/* Right Column - Sidebar */}
           <div className="space-y-8">
-            {/* Countdown */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">Election Countdown</h3>
-              <Countdown targetDate={electionDate} className="w-full justify-center" />
-            </div>
-
             {/* Member Growth Chart */}
             <div className="bg-white rounded-lg shadow-lg p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4">Member Growth</h3>
