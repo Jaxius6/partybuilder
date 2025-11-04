@@ -1,101 +1,142 @@
-import Image from "next/image";
+'use client';
+
+/**
+ * Home Page
+ * Lists all parties with stats and allows creating new parties
+ */
+
+import { useEffect, useState } from 'react';
+import PartyTable from '@/components/PartyTable';
+import CreatePartyModal from '@/components/CreatePartyModal';
+import Countdown from '@/components/Countdown';
+import MiniPie from '@/components/MiniPie';
+import type { PartyWithStats } from '@/lib/types';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [parties, setParties] = useState<PartyWithStats[]>([]);
+  const [categoryStats, setCategoryStats] = useState<{ category: string; count: number }[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const electionDate = process.env.NEXT_PUBLIC_ELECTION_DATE || '2029-03-08';
+
+  useEffect(() => {
+    fetchParties();
+  }, []);
+
+  const fetchParties = async () => {
+    try {
+      const response = await fetch('/api/parties');
+      const data = await response.json();
+      setParties(data.parties || []);
+
+      // Calculate category stats
+      const categoryMap = new Map<string, number>();
+      (data.parties || []).forEach((party: PartyWithStats) => {
+        const cat = party.category || 'Uncategorized';
+        categoryMap.set(cat, (categoryMap.get(cat) || 0) + 1);
+      });
+
+      const stats = Array.from(categoryMap.entries())
+        .map(([category, count]) => ({ category, count }))
+        .sort((a, b) => b.count - a.count);
+
+      setCategoryStats(stats);
+    } catch (error) {
+      console.error('Error fetching parties:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const totalParties = parties.length;
+  const totalMembers = parties.reduce((sum, p) => sum + p.members_count, 0);
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">
+                PartyBuilder
+              </h1>
+              <p className="mt-1 text-sm text-gray-600">
+                Build your political party prototype for Western Australia
+              </p>
+            </div>
+            <Countdown targetDate={electionDate} />
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Stats and Actions */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {/* Category Pie Chart */}
+          <div className="bg-white rounded-lg shadow p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              Parties by Category
+            </h2>
+            {categoryStats.length > 0 ? (
+              <MiniPie
+                data={categoryStats.map(s => ({
+                  label: s.category,
+                  value: s.count,
+                }))}
+              />
+            ) : (
+              <p className="text-center text-gray-500 py-8">No data yet</p>
+            )}
+          </div>
+
+          {/* Create Party CTA */}
+          <div className="lg:col-span-2 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg shadow p-8 text-white">
+            <h2 className="text-2xl font-bold mb-2">
+              Start Your Political Journey
+            </h2>
+            <p className="mb-6 text-blue-100">
+              Create a prototype political party, gather 500 members, and prepare for WAEC registration.
+            </p>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="px-6 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
+            >
+              + Create New Party
+            </button>
+          </div>
+        </div>
+
+        {/* Parties Table */}
+        <div className="bg-white rounded-lg shadow">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h2 className="text-xl font-semibold text-gray-900">
+              All Parties
+            </h2>
+          </div>
+          <div className="p-6">
+            {isLoading ? (
+              <div className="text-center py-12">
+                <div className="inline-block w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                <p className="mt-4 text-gray-600">Loading parties...</p>
+              </div>
+            ) : (
+              <PartyTable parties={parties} />
+            )}
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+      {/* Create Party Modal */}
+      <CreatePartyModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          fetchParties(); // Refresh on close
+        }}
+      />
     </div>
   );
 }
