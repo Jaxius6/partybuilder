@@ -400,9 +400,10 @@ export default function PartyPage() {
               </div>
             </div>
 
-            {/* Checklist */}
+            {/* WAEC Checklist */}
             <div className="bg-white rounded-lg shadow-lg p-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">WAEC Registration Checklist</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">WAEC Registration Checklist</h3>
+              <p className="text-sm text-gray-600 mb-6">Official requirements for party registration</p>
               <div className="flex flex-wrap gap-3 justify-center">
                 {[
                   {
@@ -475,18 +476,55 @@ export default function PartyPage() {
               </p>
             </div>
 
-            {/* Export CSV */}
+            {/* Optional Checklist */}
             <div className="bg-white rounded-lg shadow-lg p-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Export Members</h3>
-              <p className="text-sm text-gray-600 mb-4">
-                Download a CSV file of all party members for WAEC submission.
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Optional Enhancements</h3>
+              <p className="text-sm text-gray-600 mb-6">Strengthen your party's presence (not required for WAEC)</p>
+              <div className="flex flex-wrap gap-3 justify-center">
+                {[
+                  {
+                    label: 'Bank Account',
+                    checked: party.has_bank_account,
+                    tutorial: '#',
+                  },
+                  {
+                    label: 'Website',
+                    checked: party.has_website,
+                    tutorial: '#',
+                  },
+                  {
+                    label: 'Facebook Page',
+                    checked: party.has_facebook,
+                    tutorial: '#',
+                  },
+                ].map((item) => (
+                  <div
+                    key={item.label}
+                    className={`group relative flex flex-col items-center p-6 rounded-2xl border-4 transition-all duration-300 cursor-pointer ${
+                      item.checked
+                        ? 'bg-blue-500 border-blue-600 shadow-lg'
+                        : 'bg-gray-100 border-gray-300 hover:border-blue-400'
+                    }`}
+                    onClick={() => !item.checked && window.open(item.tutorial, '_blank')}
+                  >
+                    {item.checked ? (
+                      <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center mb-3">
+                        <svg className="w-10 h-10 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    ) : (
+                      <div className="w-16 h-16 rounded-full bg-gray-200 border-4 border-gray-300 mb-3 group-hover:border-blue-400 transition-colors" />
+                    )}
+                    <span className={`text-sm font-bold text-center ${item.checked ? 'text-white' : 'text-gray-700'}`}>
+                      {item.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-gray-500 text-center mt-6">
+                These enhancements help build credibility and reach more potential members
               </p>
-              <a
-                href={`/api/parties/${slug}/export.csv`}
-                className="inline-block px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold"
-              >
-                Download CSV
-              </a>
             </div>
           </div>
 

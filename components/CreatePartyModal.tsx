@@ -7,6 +7,7 @@
 
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import confetti from 'canvas-confetti';
 
 interface CreatePartyModalProps {
   isOpen: boolean;
@@ -53,10 +54,20 @@ export default function CreatePartyModal({ isOpen, onClose }: CreatePartyModalPr
         return;
       }
 
-      // Success! Navigate to the new party page
-      router.push(`/p/${data.party.slug}`);
-      router.refresh();
-      onClose();
+      // Success! Trigger confetti
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#3B82F6', '#A855F7', '#EC4899', '#10B981', '#F59E0B'],
+      });
+
+      // Navigate to the new party page after a short delay
+      setTimeout(() => {
+        router.push(`/p/${data.party.slug}`);
+        router.refresh();
+        onClose();
+      }, 500);
     } catch (error) {
       console.error('Error creating party:', error);
       setErrors({ general: 'An unexpected error occurred' });

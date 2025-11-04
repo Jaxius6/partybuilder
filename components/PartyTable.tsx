@@ -14,7 +14,10 @@ interface PartyTableProps {
 }
 
 export default function PartyTable({ parties: initialParties }: PartyTableProps) {
-  const [parties, setParties] = useState(initialParties);
+  // Sort parties by members count (descending)
+  const [parties, setParties] = useState(
+    [...initialParties].sort((a, b) => b.members_count - a.members_count)
+  );
 
   const handleLike = async (slug: string, currentLikes: number) => {
     try {
@@ -83,11 +86,30 @@ export default function PartyTable({ parties: initialParties }: PartyTableProps)
               </td>
             </tr>
           ) : (
-            parties.map((party, index) => (
-              <tr key={party.id} className="hover:bg-gray-50">
-                <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {index + 1}
-                </td>
+            parties.map((party, index) => {
+              const prevParty = index > 0 ? parties[index - 1] : null;
+              const showSeparator = prevParty && prevParty.members_count >= 500 && party.members_count < 500;
+
+              return (
+                <>
+                  {showSeparator && (
+                    <tr key={`separator-${party.id}`}>
+                      <td colSpan={6} className="px-0 py-0">
+                        <div className="relative h-1">
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-green-500 to-transparent opacity-50"></div>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="bg-white px-4 py-1 text-xs font-bold text-green-600 border-2 border-green-500 rounded-full shadow-lg">
+                              500 Member WAEC Threshold
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                  <tr key={party.id} className="hover:bg-gray-50">
+                    <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {index + 1}
+                    </td>
                 <td className="px-4 py-4 whitespace-nowrap">
                   <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${getPartyColor(party.name)} flex items-center justify-center text-white font-bold text-sm shadow-md border-2 border-white`}>
                     {party.abbreviation || party.name.substring(0, 3).toUpperCase()}
@@ -150,7 +172,7 @@ export default function PartyTable({ parties: initialParties }: PartyTableProps)
                       <span>{party.members_count} members</span>
                       {party.members_count >= 500 ? (
                         <span className="px-2 py-0.5 bg-green-100 text-green-800 rounded-full font-medium">
-                          ✓ Ready for WAEC
+                          ✓ Registered
                         </span>
                       ) : (
                         <span className="text-gray-500">
@@ -161,7 +183,9 @@ export default function PartyTable({ parties: initialParties }: PartyTableProps)
                   </div>
                 </td>
               </tr>
-            ))
+                </>
+              );
+            })
           )}
         </tbody>
       </table>

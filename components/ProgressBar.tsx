@@ -17,6 +17,16 @@ export default function ProgressBar({
   const percentage = Math.min((current / goal) * 100, 100);
   const isReady = current >= goal;
 
+  // Determine color based on progress
+  const getColor = () => {
+    if (isReady) return { text: 'text-green-600', gradient: 'from-green-400 via-green-500 to-green-600' };
+    if (current >= 450) return { text: 'text-red-600', gradient: 'from-red-400 via-red-500 to-red-600' };
+    if (current >= 400) return { text: 'text-orange-600', gradient: 'from-orange-400 via-orange-500 to-orange-600' };
+    return { text: 'text-blue-600', gradient: 'from-blue-400 via-blue-500 to-blue-600' };
+  };
+
+  const colors = getColor();
+
   return (
     <div className={`w-full ${className}`}>
       {/* Large progress display */}
@@ -26,7 +36,7 @@ export default function ProgressBar({
           <div className="text-sm text-gray-600 mt-1">of {goal} members</div>
         </div>
         <div className="text-right">
-          <div className={`text-5xl font-bold ${isReady ? 'text-green-600' : 'text-blue-600'}`}>
+          <div className={`text-5xl font-bold ${colors.text}`}>
             {percentage.toFixed(0)}%
           </div>
           <div className="text-sm text-gray-600 mt-1">
@@ -38,11 +48,7 @@ export default function ProgressBar({
       {/* Large beautiful progress bar */}
       <div className="w-full h-12 bg-gray-200 rounded-full overflow-hidden shadow-inner mb-4">
         <div
-          className={`h-full transition-all duration-700 ${
-            isReady
-              ? 'bg-gradient-to-r from-green-400 via-green-500 to-green-600'
-              : 'bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600'
-          }`}
+          className={`h-full transition-all duration-700 bg-gradient-to-r ${colors.gradient}`}
           style={{ width: `${percentage}%` }}
         >
           <div className="h-full w-full opacity-20 bg-gradient-to-t from-white to-transparent" />
