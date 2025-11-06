@@ -8,6 +8,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import confetti from 'canvas-confetti';
 import ProgressBar from '@/components/ProgressBar';
 import MiniLine from '@/components/MiniLine';
 import { timeAgo } from '@/lib/util';
@@ -24,6 +25,24 @@ export default function PartyPage() {
   const [isJoining, setIsJoining] = useState(false);
   const [showJoinForm, setShowJoinForm] = useState(false);
   const [joinError, setJoinError] = useState('');
+
+  // Generate unique color for each party based on name
+  const getPartyColor = (name: string) => {
+    const colors = [
+      'from-red-400 to-red-600',
+      'from-blue-400 to-blue-600',
+      'from-green-400 to-green-600',
+      'from-yellow-400 to-yellow-600',
+      'from-purple-400 to-purple-600',
+      'from-pink-400 to-pink-600',
+      'from-indigo-400 to-indigo-600',
+      'from-orange-400 to-orange-600',
+      'from-teal-400 to-teal-600',
+      'from-cyan-400 to-cyan-600',
+    ];
+    const hash = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return colors[hash % colors.length];
+  };
 
   const [joinForm, setJoinForm] = useState({
     full_name: '',
@@ -95,7 +114,15 @@ export default function PartyPage() {
         return;
       }
 
-      // Success! Refresh party data
+      // Success! Trigger confetti
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#10B981', '#3B82F6', '#8B5CF6', '#EC4899', '#F59E0B'],
+      });
+
+      // Refresh party data
       setShowJoinForm(false);
       setJoinForm({
         full_name: '',
@@ -179,10 +206,15 @@ export default function PartyPage() {
         {/* Party Header */}
         <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
           <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-            <div className="flex-1">
-              <h1 className="text-4xl font-bold text-gray-900 mb-2">
-                {party.name}
-              </h1>
+            <div className="flex items-start gap-6 flex-1">
+              {/* Party Logo */}
+              <div className={`w-20 h-20 rounded-xl bg-gradient-to-br ${getPartyColor(party.name)} flex items-center justify-center text-white font-bold text-xl shadow-lg flex-shrink-0`}>
+                {party.abbreviation || party.name.substring(0, 3).toUpperCase()}
+              </div>
+              <div className="flex-1">
+                <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                  {party.name}
+                </h1>
               {party.abbreviation && (
                 <p className="text-xl text-gray-600 mb-4">({party.abbreviation})</p>
               )}
@@ -211,6 +243,7 @@ export default function PartyPage() {
                   Visit Website →
                 </a>
               )}
+              </div>
             </div>
 
             <div className="flex flex-col gap-3">
@@ -401,9 +434,16 @@ export default function PartyPage() {
             </div>
 
             {/* WAEC Checklist */}
-            <div className="bg-white rounded-lg shadow-lg p-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-2">WAEC Registration Checklist</h3>
-              <p className="text-sm text-gray-600 mb-6">Official requirements for party registration</p>
+            <div className="bg-white rounded-lg shadow-lg p-8 border-l-4 border-green-500">
+              <div className="flex items-center gap-3 mb-6">
+                <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${getPartyColor(party.name)} flex items-center justify-center text-white font-bold text-sm shadow-md flex-shrink-0`}>
+                  {party.abbreviation || party.name.substring(0, 2).toUpperCase()}
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900">WAEC Registration Checklist</h3>
+                  <p className="text-sm text-gray-600">Official requirements for party registration</p>
+                </div>
+              </div>
               <div className="flex flex-wrap gap-3 justify-center">
                 {[
                   {
@@ -477,9 +517,16 @@ export default function PartyPage() {
             </div>
 
             {/* Optional Checklist */}
-            <div className="bg-white rounded-lg shadow-lg p-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Optional Enhancements</h3>
-              <p className="text-sm text-gray-600 mb-6">Strengthen your party's presence (not required for WAEC)</p>
+            <div className="bg-white rounded-lg shadow-lg p-8 border-l-4 border-blue-500">
+              <div className="flex items-center gap-3 mb-6">
+                <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${getPartyColor(party.name)} flex items-center justify-center text-white font-bold text-sm shadow-md flex-shrink-0`}>
+                  {party.abbreviation || party.name.substring(0, 2).toUpperCase()}
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900">Optional Enhancements</h3>
+                  <p className="text-sm text-gray-600">Strengthen your party's presence (not required for WAEC)</p>
+                </div>
+              </div>
               <div className="flex flex-wrap gap-3 justify-center">
                 {[
                   {
@@ -537,7 +584,7 @@ export default function PartyPage() {
                 <MiniLine
                   data={dailyStats.map(s => ({ date: s.date, value: s.members }))}
                   width={280}
-                  height={150}
+                  height={80}
                 />
               ) : (
                 <p className="text-center text-gray-500 py-8">No data yet</p>

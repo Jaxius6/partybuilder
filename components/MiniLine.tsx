@@ -21,9 +21,9 @@ interface MiniLineProps {
 
 export default function MiniLine({
   data,
-  width = 300,
-  height = 150,
-  color = '#3b82f6',
+  width = 280,
+  height = 80,
+  color = '#4b5563',
 }: MiniLineProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 

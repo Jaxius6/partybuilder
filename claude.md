@@ -2,9 +2,11 @@
 
 ## Project Status
 
-✅ **Complete** - All code written and committed to local git
-⏳ **Pending** - Seed database to populate test parties
-⏳ **Pending** - Push to GitHub repository
+✅ **Complete** - All code written with major UX improvements
+✅ **Complete** - Neutral design with no political color bias
+✅ **Complete** - Smart progress bars (blue→orange→red→green)
+⏳ **Ready** - Seed database to populate test parties
+⏳ **Ready** - Push to GitHub repository
 
 ## Quick Start
 
@@ -25,7 +27,18 @@ npm run seed
 
 ## Project Overview
 
-PartyBuilder is a no-database MVP platform for creating political party prototypes in Western Australia. It helps aspiring parties gather 500+ members and prepare for WAEC (Western Australian Electoral Commission) registration.
+PartyBuilder is a no-database MVP platform for creating political parties in Western Australia. It helps aspiring parties gather 500+ members and prepare for WAEC (Western Australian Electoral Commission) registration.
+
+### Design Philosophy
+
+- **Politically Neutral**: Clean white and grey color scheme with no bias
+- **Party Colors**: Only individual party logos show unique colors
+- **Smart Progress Bars**: Visual feedback changes as parties grow:
+  - 🔵 Blue (0-249 members) - Starting out
+  - 🟠 Orange (250-399 members) - Building momentum
+  - 🔴 Red (400-499 members) - Almost there!
+  - 🟢 Green (500+ members) - Registered and ready
+- **Clear Sections**: "Current Registered Parties in WA" vs "Potential Political Parties"
 
 ## Tech Stack
 
@@ -77,11 +90,10 @@ partybuilder/
 │   └── page.tsx              # Home page
 ├── components/               # React components
 │   ├── Countdown.tsx         # Ticking election countdown
-│   ├── CreatePartyModal.tsx  # Party creation form
-│   ├── MiniLine.tsx          # Canvas line chart
-│   ├── MiniPie.tsx           # Canvas pie chart
-│   ├── PartyTable.tsx        # Party listing
-│   └── ProgressBar.tsx       # Member progress
+│   ├── CreatePartyModal.tsx  # Party creation form (with confetti!)
+│   ├── MiniLine.tsx          # Canvas line chart (thin & compact)
+│   ├── PartyTable.tsx        # Smart party listing with color-coded progress
+│   └── ProgressBar.tsx       # Member progress visualization
 ├── lib/                      # Core logic
 │   ├── store.ts              # In-memory storage
 │   ├── types.ts              # TypeScript definitions
@@ -157,12 +169,16 @@ Comprehensive validation with detailed error messages:
 - Levenshtein distance similarity check
 - Auto-formatting to Title Case
 
-### 2. Progress Tracking
-Visual indicators for 500-member goal:
-- Progress bar with percentage
-- Color coding (blue < 500, green ≥ 500)
-- "Ready for WAEC" badge at 500+
-- 30-day member growth chart
+### 2. Smart Progress Tracking
+Visual indicators for 500-member goal with intelligent color coding:
+- **Blue bars** (0-249 members) - Just starting
+- **Orange bars** (250-399 members) - Gaining traction
+- **Red bars** (400-499 members) - Almost at threshold
+- **Green bars** (500+ members) - Registered parties
+- Progress bars show for ALL parties (capped at 100% display for registered)
+- Percentage shown only for parties under 500 members
+- "✓ Registered" badge for 500+ member parties
+- 30-day member growth chart (thin & compact)
 
 ### 3. Registration Checklist
 Track WAEC requirements:
@@ -213,10 +229,10 @@ npm start
 
 The seed script (`scripts/seed.ts`) populates:
 
-### Test Parties (Prototypes)
-- Stop Ai Party (120 members)
-- Fix Housing Party (350 members)
-- Pro Ai Party (89 members)
+### Potential Political Parties (< 500 members)
+- Stop Ai Party (120 members) - Blue progress bar
+- Fix Housing Party (350 members) - Orange progress bar
+- Pro Ai Party (89 members) - Blue progress bar
 
 ### Real Registered Parties (500+ members each)
 - WA Labor (2100 members)
@@ -234,30 +250,48 @@ The seed script (`scripts/seed.ts`) populates:
 
 ## UI Components
 
+### Logo & Branding
+- Neutral community icon (grey gradient with people silhouette)
+- SVG favicon matching logo design
+- No political color bias in UI
+- White and grey color scheme throughout
+
 ### Countdown
 - Displays years, months, days, hours, minutes, seconds
 - Updates every second (ticking animation)
 - Responsive sizing for mobile/desktop
-- Blue color scheme matching brand
+- Neutral grey color scheme
 
-### Progress Bar
-- Shows current/goal member count
-- Percentage calculation
-- Color transitions at milestones
-- "Ready for WAEC" indicator at 500+
+### Party Table
+- **Two sections**: "Current Registered Parties in WA" and "Potential Political Parties"
+- **Smart color-coded progress bars**:
+  - Blue (0-249) → Orange (250-399) → Red (400-499) → Green (500+)
+- Shows progress bars for ALL parties (capped at 100% display)
+- Percentage only shown for parties under 500 members
+- Registered parties link directly to their website
+- Potential parties link to checklist page
+- Compact rows for efficient vertical space
+- Smaller logos (10x10) with unique colors per party
+- Likes positioned at far right
 
-### Charts
-**MiniPie** - Category breakdown
-- Vanilla canvas implementation
-- Auto-color assignment
-- Legend with counts
-- Responsive sizing
-
-**MiniLine** - Member growth over time
-- 30-day history
+### Progress Charts
+- **Thin & compact** design (80px height vs 150px)
+- Neutral grey color scheme
+- 30-day member growth history
 - Grid lines for readability
 - Auto-scaling Y-axis
 - Date labels on X-axis
+
+### Confetti Animations
+- Triggers when creating a new party
+- Triggers when joining a party
+- Celebratory user feedback
+
+### Party Detail Pages
+- Party logo in header and checklists
+- Color-coded left borders (green for WAEC requirements, blue for optional)
+- Visual checklist with large clickable tiles
+- Member growth chart in sidebar
 
 ## Future Enhancements
 
@@ -353,8 +387,10 @@ When working on PartyBuilder:
    ```
 
 3. **You'll see**:
-   - 3 test parties: Stop Ai Party, Fix Housing Party, Pro Ai Party
-   - 12 real registered WA parties (all with 500+ members showing green progress bars)
+   - 3 potential political parties with blue/orange progress bars
+   - 12 registered WA parties with green progress bars (500+ members)
+   - Smart color-coded progress bars showing member growth
+   - Clean, neutral design with no political bias
 
 ### To Push to GitHub
 
@@ -373,6 +409,6 @@ git push -u origin master
 
 ---
 
-**Last Updated**: November 4, 2025
-**Version**: 0.1.0 (MVP)
-**Status**: Code complete, ready to run and seed
+**Last Updated**: November 6, 2025
+**Version**: 0.2.0 (Major UX Update)
+**Status**: Production-ready with smart progress tracking and neutral design

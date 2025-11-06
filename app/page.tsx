@@ -9,29 +9,15 @@ import { useEffect, useState } from 'react';
 import PartyTable from '@/components/PartyTable';
 import CreatePartyModal from '@/components/CreatePartyModal';
 import Countdown from '@/components/Countdown';
-import MiniPie from '@/components/MiniPie';
 import type { PartyWithStats } from '@/lib/types';
 
 export default function Home() {
   const [parties, setParties] = useState<PartyWithStats[]>([]);
-  const [categoryStats, setCategoryStats] = useState<{ category: string; count: number }[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedState, setSelectedState] = useState('WA');
 
   const electionDate = process.env.NEXT_PUBLIC_ELECTION_DATE || '2029-03-08';
-
-  // WA Legislative Council seat distribution (36 seats total)
-  const legislativeCouncilSeats = [
-    { label: 'WA Labor', value: 14 },
-    { label: 'Liberal Party Western Australia', value: 9 },
-    { label: 'The Greens (WA) Inc', value: 4 },
-    { label: 'The Nationals WA', value: 3 },
-    { label: 'Legalise Cannabis Party WA', value: 2 },
-    { label: "Pauline Hanson's One Nation", value: 2 },
-    { label: 'Daylight Saving Party', value: 1 },
-    { label: 'Independent/Others', value: 1 },
-  ];
 
   useEffect(() => {
     fetchParties();
@@ -42,28 +28,12 @@ export default function Home() {
       const response = await fetch('/api/parties');
       const data = await response.json();
       setParties(data.parties || []);
-
-      // Calculate category stats
-      const categoryMap = new Map<string, number>();
-      (data.parties || []).forEach((party: PartyWithStats) => {
-        const cat = party.category || 'Uncategorized';
-        categoryMap.set(cat, (categoryMap.get(cat) || 0) + 1);
-      });
-
-      const stats = Array.from(categoryMap.entries())
-        .map(([category, count]) => ({ category, count }))
-        .sort((a, b) => b.count - a.count);
-
-      setCategoryStats(stats);
     } catch (error) {
       console.error('Error fetching parties:', error);
     } finally {
       setIsLoading(false);
     }
   };
-
-  const totalParties = parties.length;
-  const totalMembers = parties.reduce((sum, p) => sum + p.members_count, 0);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -72,14 +42,11 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex items-center gap-4">
-              {/* Logo - Ballot Box with Star */}
-              <div className="relative w-16 h-16 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0 transform hover:rotate-6 transition-transform">
-                <div className="absolute inset-0 bg-white opacity-20 rounded-2xl"></div>
-                <div className="relative">
-                  <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2L9.19 8.63L2 9.24l5.46 4.73L5.82 21L12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2z"/>
-                  </svg>
-                </div>
+              {/* Logo - Better Community Icon */}
+              <div className="relative w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0 border-2 border-gray-300">
+                <svg className="w-10 h-10 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                </svg>
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-gray-900">
@@ -113,71 +80,20 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Hero CTA */}
-        <div className="mb-8 bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 rounded-2xl shadow-xl p-10 text-white text-center">
-          <h2 className="text-4xl font-bold mb-3">
+        {/* Hero CTA - Compact */}
+        <div className="mb-6 bg-white border-2 border-gray-200 rounded-xl shadow-sm p-6 text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
             Start Your Political Journey
           </h2>
-          <p className="text-xl mb-8 text-blue-100 max-w-2xl mx-auto">
+          <p className="text-sm text-gray-600 mb-4 max-w-2xl mx-auto">
             Create a political party, gather 500 members, and prepare for WAEC registration
           </p>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="px-8 py-4 bg-white text-blue-600 rounded-xl font-bold text-lg hover:bg-blue-50 transition-all hover:scale-105 shadow-lg"
+            className="px-6 py-2 bg-gray-100 text-gray-900 rounded-lg font-semibold text-sm hover:bg-gray-200 transition-all border-2 border-gray-300"
           >
             + Create New Party
           </button>
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          {/* Legislative Council Seats Chart */}
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              WA Legislative Council Seats
-            </h2>
-            <MiniPie data={legislativeCouncilSeats} />
-            <p className="text-sm text-gray-600 mt-6 text-center">
-              Current distribution of 36 seats in the Upper House
-            </p>
-          </div>
-
-          {/* Stats Summary */}
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              Platform Statistics
-            </h2>
-            <div className="space-y-6">
-              <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
-                <div>
-                  <div className="text-sm text-gray-600">Total Parties</div>
-                  <div className="text-4xl font-bold text-blue-600">{totalParties}</div>
-                </div>
-                <div className="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
-                  </svg>
-                </div>
-              </div>
-              <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg">
-                <div>
-                  <div className="text-sm text-gray-600">Total Members</div>
-                  <div className="text-4xl font-bold text-green-600">{totalMembers.toLocaleString()}</div>
-                </div>
-                <div className="w-16 h-16 rounded-full bg-green-600 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
-                  </svg>
-                </div>
-              </div>
-              <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border-2 border-purple-200">
-                <div className="text-sm text-purple-700 font-medium mb-1">Registration Threshold</div>
-                <div className="text-lg text-purple-900">
-                  <span className="font-bold text-2xl">{parties.filter(p => p.members_count >= 500).length}</span> parties ready for WAEC
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Parties Table */}
@@ -190,11 +106,11 @@ export default function Home() {
           <div className="p-6">
             {isLoading ? (
               <div className="text-center py-12">
-                <div className="inline-block w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+                <div className="inline-block w-8 h-8 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
                 <p className="mt-4 text-gray-600">Loading parties...</p>
               </div>
             ) : (
-              <PartyTable parties={parties} />
+              <PartyTable parties={parties} onCreateClick={() => setIsModalOpen(true)} />
             )}
           </div>
         </div>
