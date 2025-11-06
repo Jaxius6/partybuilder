@@ -42,10 +42,16 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex items-center gap-4">
-              {/* Logo - Better Community Icon */}
-              <div className="relative w-16 h-16 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0 border-2 border-gray-300">
-                <svg className="w-10 h-10 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+              {/* Logo - Modern Political Building Icon */}
+              <div className="relative w-16 h-16 bg-gradient-to-br from-indigo-600 via-blue-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-2xl flex-shrink-0 border-2 border-white ring-2 ring-indigo-200">
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-white/10 to-transparent"></div>
+                <svg className="w-10 h-10 text-white relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                  {/* Parliament/Building with people */}
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  <circle cx="8" cy="14" r="1.5" fill="currentColor" />
+                  <circle cx="12" cy="14" r="1.5" fill="currentColor" />
+                  <circle cx="16" cy="14" r="1.5" fill="currentColor" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v4" strokeWidth="2" />
                 </svg>
               </div>
               <div>
@@ -90,30 +96,26 @@ export default function Home() {
           </p>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="px-5 py-1.5 bg-gray-100 text-gray-900 rounded-lg font-semibold text-xs hover:bg-gray-200 transition-all border border-gray-300"
+            className="group relative inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-indigo-600 via-blue-600 to-purple-600 text-white rounded-lg font-bold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:-translate-y-0.5 active:scale-100 overflow-hidden"
           >
-            + Create New Party
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <svg className="w-5 h-5 relative z-10 group-hover:rotate-90 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            <span className="relative z-10">Create New Party</span>
+            <div className="absolute inset-0 -z-10 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
           </button>
         </div>
 
-        {/* Parties Table */}
-        <div className="bg-white rounded-lg shadow">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-900">
-              All Parties
-            </h2>
+        {/* Parties Tables */}
+        {isLoading ? (
+          <div className="text-center py-12 bg-white rounded-lg shadow">
+            <div className="inline-block w-8 h-8 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
+            <p className="mt-4 text-gray-600">Loading parties...</p>
           </div>
-          <div className="p-6">
-            {isLoading ? (
-              <div className="text-center py-12">
-                <div className="inline-block w-8 h-8 border-4 border-gray-500 border-t-transparent rounded-full animate-spin" />
-                <p className="mt-4 text-gray-600">Loading parties...</p>
-              </div>
-            ) : (
-              <PartyTable parties={parties} onCreateClick={() => setIsModalOpen(true)} />
-            )}
-          </div>
-        </div>
+        ) : (
+          <PartyTable parties={parties} onCreateClick={() => setIsModalOpen(true)} />
+        )}
       </main>
 
       {/* Create Party Modal */}

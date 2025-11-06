@@ -23,6 +23,7 @@ CREATE TABLE partybuilder (
   -- Engagement
   likes INTEGER DEFAULT 0,
   members_count INTEGER DEFAULT 0,
+  elected_seats INTEGER DEFAULT 0,
 
   -- Requirements Checklist
   has_bank_account BOOLEAN DEFAULT false,

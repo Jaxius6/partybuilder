@@ -34,6 +34,7 @@ export type Party = {
   gazette_notice_date?: string;
   objection_deadline?: string;
   objections_count: number;
+  elected_seats?: number; // Number of seats in parliament
   created_at: string;
 };
 
