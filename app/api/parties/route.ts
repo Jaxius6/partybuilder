@@ -14,7 +14,7 @@ import { validatePartyInput } from '@/lib/validate';
  */
 export async function GET() {
   try {
-    const parties = listParties();
+    const parties = await listParties();
     return NextResponse.json({ parties });
   } catch (error) {
     console.error('Error listing parties:', error);
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     // Get existing party names for validation
-    const existingNames = getAllPartyNames();
+    const existingNames = await getAllPartyNames();
 
     // Validate input
     const validation = validatePartyInput(body, existingNames);
@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create party with formatted name
-    const party = createParty({
+    const party = await createParty({
       ...body,
       name: validation.data!.formattedName,
     });

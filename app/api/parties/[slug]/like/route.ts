@@ -20,7 +20,7 @@ export async function POST(
     // TODO: Add cookie-based throttling to prevent spam
     // For MVP, we'll allow unlimited likes
 
-    const party = likeParty(slug);
+    const party = await likeParty(slug);
 
     if (!party) {
       return NextResponse.json(

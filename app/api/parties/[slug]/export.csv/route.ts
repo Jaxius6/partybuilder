@@ -18,7 +18,7 @@ export async function GET(
     const { slug } = params;
 
     // Check if party exists
-    const party = getParty(slug);
+    const party = await getParty(slug);
     if (!party) {
       return NextResponse.json(
         { error: 'Party not found' },

@@ -24,7 +24,7 @@ export async function GET(
   try {
     const { slug } = params;
 
-    const party = getParty(slug);
+    const party = await getParty(slug);
     if (!party) {
       return NextResponse.json(
         { error: 'Party not found' },
@@ -33,11 +33,11 @@ export async function GET(
     }
 
     // Get additional data
-    const recentMembers = getRecentMembers(slug, 10);
-    const quotes = getPartyQuotes(slug);
-    const policies = getPartyPolicies(slug);
-    const endorsements = getPartyEndorsements(slug);
-    const dailyStats = getDailyStats(slug, 30);
+    const recentMembers = await getRecentMembers(slug, 10);
+    const quotes = await getPartyQuotes(slug);
+    const policies = await getPartyPolicies(slug);
+    const endorsements = await getPartyEndorsements(slug);
+    const dailyStats = await getDailyStats(slug, 30);
 
     return NextResponse.json({
       party,

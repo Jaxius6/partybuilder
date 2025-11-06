@@ -30,16 +30,16 @@ export async function POST(
     }
 
     // Join party
-    const member = joinParty(slug, body);
+    const result = await joinParty(slug, body);
 
-    if (!member) {
+    if (!result) {
       return NextResponse.json(
         { error: 'Party not found' },
         { status: 404 }
       );
     }
 
-    return NextResponse.json({ member }, { status: 201 });
+    return NextResponse.json({ success: true }, { status: 201 });
   } catch (error) {
     if (error instanceof Error && error.message.includes('already registered')) {
       return NextResponse.json(
