@@ -79,45 +79,45 @@ export default function Countdown({ targetDate, className = '' }: CountdownProps
   }, [targetDate]);
 
   return (
-    <div className={`inline-flex flex-col items-center gap-2 px-3 sm:px-4 py-3 bg-blue-50 border border-blue-200 rounded-lg ${className}`}>
-      <span className="text-xs font-semibold text-blue-800 uppercase tracking-wide">
+    <div className={`inline-flex flex-col items-center gap-2 px-3 sm:px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg ${className}`}>
+      <span className="text-xs font-semibold text-gray-700 uppercase tracking-wide">
         Until Next WA State Election
       </span>
       <div className="flex items-center gap-1 sm:gap-2">
       {timeRemaining.years > 0 && (
         <div className="flex flex-col items-center">
-          <span className="text-lg sm:text-2xl font-bold text-blue-600">{timeRemaining.years}</span>
-          <span className="text-[10px] sm:text-xs text-blue-800">year{timeRemaining.years !== 1 ? 's' : ''}</span>
+          <span className="text-lg sm:text-2xl font-bold text-gray-900">{timeRemaining.years}</span>
+          <span className="text-[10px] sm:text-xs text-gray-600">year{timeRemaining.years !== 1 ? 's' : ''}</span>
         </div>
       )}
       {(timeRemaining.years > 0 || timeRemaining.months > 0) && (
         <>
-          {timeRemaining.years > 0 && <span className="text-blue-400">:</span>}
+          {timeRemaining.years > 0 && <span className="text-gray-400">:</span>}
           <div className="flex flex-col items-center">
-            <span className="text-lg sm:text-2xl font-bold text-blue-600">{timeRemaining.months}</span>
-            <span className="text-[10px] sm:text-xs text-blue-800">month{timeRemaining.months !== 1 ? 's' : ''}</span>
+            <span className="text-lg sm:text-2xl font-bold text-gray-900">{timeRemaining.months}</span>
+            <span className="text-[10px] sm:text-xs text-gray-600">month{timeRemaining.months !== 1 ? 's' : ''}</span>
           </div>
         </>
       )}
-      <span className="text-blue-400">:</span>
+      <span className="text-gray-400">:</span>
       <div className="flex flex-col items-center">
-        <span className="text-lg sm:text-2xl font-bold text-blue-600">{timeRemaining.days}</span>
-        <span className="text-[10px] sm:text-xs text-blue-800">day{timeRemaining.days !== 1 ? 's' : ''}</span>
+        <span className="text-lg sm:text-2xl font-bold text-gray-900">{timeRemaining.days}</span>
+        <span className="text-[10px] sm:text-xs text-gray-600">day{timeRemaining.days !== 1 ? 's' : ''}</span>
       </div>
-      <span className="text-blue-400">:</span>
+      <span className="text-gray-400">:</span>
       <div className="flex flex-col items-center">
-        <span className="text-lg sm:text-2xl font-bold text-blue-600">{String(timeRemaining.hours).padStart(2, '0')}</span>
-        <span className="text-[10px] sm:text-xs text-blue-800">hours</span>
+        <span className="text-lg sm:text-2xl font-bold text-gray-900">{String(timeRemaining.hours).padStart(2, '0')}</span>
+        <span className="text-[10px] sm:text-xs text-gray-600">hours</span>
       </div>
-      <span className="text-blue-400">:</span>
+      <span className="text-gray-400">:</span>
       <div className="flex flex-col items-center">
-        <span className="text-lg sm:text-2xl font-bold text-blue-600">{String(timeRemaining.minutes).padStart(2, '0')}</span>
-        <span className="text-[10px] sm:text-xs text-blue-800">mins</span>
+        <span className="text-lg sm:text-2xl font-bold text-gray-900">{String(timeRemaining.minutes).padStart(2, '0')}</span>
+        <span className="text-[10px] sm:text-xs text-gray-600">mins</span>
       </div>
-      <span className="text-blue-400">:</span>
+      <span className="text-gray-400">:</span>
       <div className="flex flex-col items-center">
-        <span className="text-lg sm:text-2xl font-bold text-blue-600">{String(timeRemaining.seconds).padStart(2, '0')}</span>
-        <span className="text-[10px] sm:text-xs text-blue-800">secs</span>
+        <span className="text-lg sm:text-2xl font-bold text-gray-900">{String(timeRemaining.seconds).padStart(2, '0')}</span>
+        <span className="text-[10px] sm:text-xs text-gray-600">secs</span>
       </div>
       </div>
     </div>

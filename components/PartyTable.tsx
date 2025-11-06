@@ -81,11 +81,6 @@ export default function PartyTable({ parties: initialParties, onCreateClick }: P
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th colSpan={5} className="px-3 py-3 text-left text-sm font-bold text-gray-900 border-b-2 border-gray-300">
-              Current Registered Parties in WA
-            </th>
-          </tr>
-          <tr>
             <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Logo
             </th>
@@ -121,10 +116,10 @@ export default function PartyTable({ parties: initialParties, onCreateClick }: P
                   {showSeparator && (
                     <tr key={`separator-${party.id}`}>
                       <td colSpan={5} className="px-0 py-0">
-                        <div className="relative h-12 bg-gradient-to-r from-green-50 via-green-100 to-green-50 border-t-4 border-b-4 border-green-400">
+                        <div className="relative h-10 bg-gray-100 border-t border-b border-gray-300">
                           <div className="absolute inset-0 flex items-center justify-center">
-                            <span className="bg-white px-6 py-2 text-base font-bold text-green-700 border-2 border-green-400 rounded-lg shadow-md">
-                              ⬇ Potential Political Parties
+                            <span className="bg-white px-4 py-1.5 text-xs font-semibold text-gray-600 border border-gray-300 rounded">
+                              Potential Political Parties
                             </span>
                           </div>
                         </div>
@@ -133,11 +128,11 @@ export default function PartyTable({ parties: initialParties, onCreateClick }: P
                   )}
                   <tr
                     key={party.id}
-                    className={`hover:bg-gray-50 ${isRegistered ? 'cursor-pointer' : 'cursor-pointer'}`}
+                    className="hover:bg-blue-50 transition-colors cursor-pointer"
                     onClick={() => handleRowClick(party)}
                   >
                     <td className="px-3 py-2 whitespace-nowrap">
-                      <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${getPartyColor(party.name)} flex items-center justify-center text-white font-bold text-xs shadow-md`}>
+                      <div className={`w-6 h-6 rounded-lg bg-gradient-to-br ${getPartyColor(party.name)} flex items-center justify-center text-white font-bold text-[9px] shadow-md`}>
                         {party.abbreviation || party.name.substring(0, 3).toUpperCase()}
                       </div>
                     </td>
@@ -160,7 +155,7 @@ export default function PartyTable({ parties: initialParties, onCreateClick }: P
                     </td>
                     <td className="px-3 py-2">
                       <div className="flex items-center gap-2">
-                        <div className="flex-1 h-3 bg-gray-200 rounded-full overflow-hidden shadow-inner">
+                        <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden shadow-inner">
                           <div
                             className={`h-full transition-all duration-500 bg-gradient-to-r ${getProgressColor(party.members_count)}`}
                             style={{ width: `${Math.min(party.pct_to_500, 100)}%` }}
@@ -188,10 +183,10 @@ export default function PartyTable({ parties: initialParties, onCreateClick }: P
                       <div className="flex items-center justify-end gap-1">
                         <button
                           onClick={(e) => handleLike(e, party.slug)}
-                          className="p-1 rounded-full hover:bg-gray-100 transition-colors group"
+                          className="p-1 rounded-full hover:bg-blue-100 transition-all group hover:scale-125 active:scale-150"
                           title="Like this party"
                         >
-                          <svg className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors" fill="currentColor" viewBox="0 0 20 20">
+                          <svg className="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
                           </svg>
                         </button>

@@ -81,16 +81,16 @@ export default function Home() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero CTA - Compact */}
-        <div className="mb-6 bg-white border-2 border-gray-200 rounded-xl shadow-sm p-6 text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <div className="mb-4 bg-white border border-gray-200 rounded-lg shadow-sm p-4 text-center">
+          <h2 className="text-lg font-bold text-gray-900 mb-1">
             Start Your Political Journey
           </h2>
-          <p className="text-sm text-gray-600 mb-4 max-w-2xl mx-auto">
+          <p className="text-xs text-gray-600 mb-3 max-w-2xl mx-auto">
             Create a political party, gather 500 members, and prepare for WAEC registration
           </p>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="px-6 py-2 bg-gray-100 text-gray-900 rounded-lg font-semibold text-sm hover:bg-gray-200 transition-all border-2 border-gray-300"
+            className="px-5 py-1.5 bg-gray-100 text-gray-900 rounded-lg font-semibold text-xs hover:bg-gray-200 transition-all border border-gray-300"
           >
             + Create New Party
           </button>
